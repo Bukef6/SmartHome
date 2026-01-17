@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   smartDevices as defaultDevices,
   type SmartDevice,
@@ -8,8 +8,31 @@ import { Header } from "./components/Header";
 import { DeviceCard } from "./components/DeviceCard";
 
 function App() {
-  const [devices, setDevices] = useState<SmartDevice[]>(defaultDevices);
+  //const [devices, setDevices] = useState<SmartDevice[]>(defaultDevices);
+  const [devices, setDevices] = useState<SmartDevice[]>(() => {
+    try {
+      const saved = localStorage.getItem("smartDevices");
+      if (saved) return JSON.parse(saved);
+    } catch (err) {
+      console.error("Chyba pri načítaní zo storage", err);
+    }
+    return defaultDevices;
+  });
   const [filter, setFilter] = useState<"all" | "on" | "off">("all");
+
+  // useEffect(() => {
+  //   const saved = localStorage.getItem("smartDevices");
+  //   if (saved) setDevices(JSON.parse(saved));
+  // }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("smartDevices", JSON.stringify(devices));
+    } catch (err) {
+      console.error("Chyba pri ukladaní do storage", err);
+    }
+  }, [devices]);
+
   const toggleDevice = (id: number) => {
     setDevices((prevDevices) =>
       prevDevices.map((dev) =>

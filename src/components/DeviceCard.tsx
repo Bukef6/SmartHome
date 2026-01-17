@@ -151,16 +151,21 @@ export const DeviceCard = ({
           </div>
         )}
 
-        {device.type === "lock" && device.isActive && (
+        {device.type === "lock" && (
           <>
-            <div className="flex flex-col items-center justify-center w-full">
-              <IconCircle size={110}>
-                <KeyIcon className="!text-[102px] text-[var(--white-muted)] " />
-              </IconCircle>
-              <span className="text-[var(--white-muted)] text-[34px] text-nowrap font-extrabold">
-                {device.lastActivity}
-              </span>
-            </div>
+            {device.isActive && (
+              <div className="flex flex-col items-center justify-center w-full">
+                {/* <span className="text-green-300 text-[20px] text-nowrap font-semibold mb-2">
+                  Zamknuté
+                </span> */}
+                <IconCircle size={110}>
+                  <KeyIcon className="!text-[102px] text-[var(--white-muted)] " />
+                </IconCircle>
+                <span className=" text-[var(--white-muted)] text-[34px] text-nowrap font-extrabold ">
+                  {device.lastActivity}
+                </span>
+              </div>
+            )}
           </>
         )}
 
